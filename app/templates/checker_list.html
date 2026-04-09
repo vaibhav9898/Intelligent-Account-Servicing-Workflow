@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checker Queue</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <h1>Checker Queue</h1>
+      <p><a href="/">Back to Intake</a></p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Customer ID</th>
+            <th>Status</th>
+            <th>Recommendation</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+          <tr>
+            <td>{{ record.request_id }}</td>
+            <td>{{ record.customer_id }}</td>
+            <td>{{ record.overall_status }}</td>
+            <td>{{ record.recommended_action }}</td>
+            <td><a href="/checker/{{ record.request_id }}">Review</a></td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5">No requests found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

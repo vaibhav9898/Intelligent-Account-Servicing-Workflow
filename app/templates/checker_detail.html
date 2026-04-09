@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checker Detail</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <h1>Request {{ record.request_id }}</h1>
+      <p><a href="/checker">Back to Queue</a></p>
+
+      <div class="card-grid">
+        <div class="card"><strong>Customer ID</strong><span>{{ record.customer_id }}</span></div>
+        <div class="card"><strong>Status</strong><span>{{ record.overall_status }}</span></div>
+        <div class="card"><strong>Requested Old Name</strong><span>{{ record.old_name_requested }}</span></div>
+        <div class="card"><strong>Extracted Old Name</strong><span>{{ record.old_name_extracted }}</span></div>
+        <div class="card"><strong>Requested New Name</strong><span>{{ record.new_name_requested }}</span></div>
+        <div class="card"><strong>Extracted New Name</strong><span>{{ record.new_name_extracted }}</span></div>
+        <div class="card"><strong>Confidence Old</strong><span>{{ record.confidence_old_name }}</span></div>
+        <div class="card"><strong>Confidence New</strong><span>{{ record.confidence_new_name }}</span></div>
+        <div class="card"><strong>Confidence Authenticity</strong><span>{{ record.confidence_authenticity }}</span></div>
+        <div class="card"><strong>Forgery Check</strong><span>{{ record.forgery_check }}</span></div>
+        <div class="card"><strong>Recommendation</strong><span>{{ record.recommended_action }}</span></div>
+        <div class="card"><strong>FileNet Ref</strong><span>{{ record.filenet_reference_id or '-' }}</span></div>
+        <div class="card"><strong>RPS Ref</strong><span>{{ record.rps_write_reference or '-' }}</span></div>
+      </div>
+
+      <h2>AI Summary</h2>
+      <p>{{ record.ai_summary }}</p>
+
+      {% if record.overall_status == "AI_VERIFIED_PENDING_HUMAN" %}
+      <form action="/checker/{{ record.request_id }}/decision" method="post" class="decision-form">
+        <label>
+          Checker Comment (Optional)
+          <textarea name="comment" rows="3"></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" name="decision" value="APPROVE" class="approve">Approve</button>
+          <button type="submit" name="decision" value="REJECT" class="reject">Reject</button>
+        </div>
+      </form>
+      {% else %}
+      <p><strong>Checker Decision:</strong> {{ record.checker_decision }}</p>
+      <p><strong>Checker Comment:</strong> {{ record.checker_comment or '-' }}</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
